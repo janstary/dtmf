@@ -1,0 +1,75 @@
+.\" (c) 2018 Jan Stary <hans@stare.cz>
+.\" 
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\" 
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.Dd August 20, 2018
+.Dt DTMF 1
+.Os
+.Sh NAME
+.Nm dtmf
+.Nd generate and recognize DTMF tones
+.Sh SYNOPSIS
+.Nm
+.Op Fl d
+.Op Fl g Ar len
+.Op Fl t Ar len
+.Op Ar input
+.Op Ar output
+.Sh DESCRIPTION
+.Nm
+converts a sequence of symbols into the corresponding DTMF tones,
+or vice versa.
+The
+.Ar input
+is a name of a file (with
+.Dq -
+or no name meaning the standard input),
+expected to contain either a sequence of symbols from
+.Dq 123A456B789C*0#D ,
+or one channel of unsigned 8-bit linear PCM audio data
+at a sample rate of 8 kHz.
+When reading symbols, whitespace is quietly ignored,
+but anything else is considered an error.
+.Pp
+The corresponding tones or digits will be written into the named
+.Ar output
+file (with
+.Dq -
+or no name meaning the standard output).
+.Nm
+will truncate and overwrite
+.Ar output
+if it already exists.
+.Pp
+The options are as follows:
+.Bl -tag -width Ds
+.It Fl d
+Decode the tones and emit the symbols,
+as opposed to generating the tones, which is the default.
+.It Fl g Ar len
+The length of the gaps of silence between the tones, specified in miliseconds.
+When generating the tones,
+.Nm
+will put a 50 ms gap of silence between the generated tones by default.
+When decoding the tones, the gap must be at least this long
+to be considered a gap.
+.It Fl t Ar len
+The length of the tones, in miliseconds.
+When generating,
+.Nm
+will produce 100 ms of sound for each symbol by default.
+When decoding, the sound must be at least 100 ms by default.
+.El
+.Sh EXAMPLES
+.Dl $ dtmf -t 125 -g 50 - audio.raw
+.Dl $ echo 1234 | dtmf | play -c 1 -r 8000 -b 8 -e unsigned -t raw -
+.Dl $ play -r 8000 -b 8 -n synth 1 sin 697 sin 1209 remix - | dtmf -d
