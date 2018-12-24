@@ -12,6 +12,13 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
 
+/* TODO
+ * https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling
+ * https://en.wikipedia.org/wiki/Goertzel_algorithm
+ * https://www.itu.int/rec/T-REC-F.902/en
+ * https://www.itu.int/rec/T-REC-Q.24/en
+ */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
