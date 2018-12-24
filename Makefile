@@ -57,7 +57,7 @@ FMT=-r 8000 -b 8 -e unsigned
 
 test: $(BINS)
 	echo $(SYM) | ./dtmf | ./dtmf -d
-	echo $(SYM) | ./dtmf | play -c 1 $(FMT) -t raw - spectrogram
+	echo $(SYM) | ./dtmf | play -c 1 $(FMT) -t raw -
 	sox $(FMT) -n $(FMT) -t raw - synth 1 $(SIN) remix - gain -3 | ./dtmf -d
 
 dist: $(TARBALL)
